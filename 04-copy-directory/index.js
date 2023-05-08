@@ -5,6 +5,11 @@ exports.copyDirectory = copyDirectory;
 
 async function copyDirectory(src, dist){
     await fs.promises.mkdir(dist, { recursive: true });
+    const oldFiles = await fs.promises.readdir(dist);
+    for (const file of oldFiles){
+        await fs.promises.unlink(path.join(dist, file));
+    }
+
     const files = await fs.promises.readdir(src, {withFileTypes: true});
 
     for (const file of files){
