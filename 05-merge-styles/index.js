@@ -13,7 +13,7 @@ async function mergeStyles(src, dist){
         const extName = path.extname(file.name);
         if (file.isFile() && extName == '.css'){
             const contents = await fs.promises.readFile(path.resolve(src, file.name));
-            dataArray.push(contents);
+            dataArray.push(contents + '\n');
         }
     }
     dataArray.reverse();
