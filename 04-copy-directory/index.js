@@ -4,10 +4,16 @@ const path = require('path');
 exports.copyDirectory = copyDirectory;
 
 async function copyDirectory(src, dist){
+    
     await fs.promises.mkdir(dist, { recursive: true });
-    const oldFiles = await fs.promises.readdir(dist);
+    const oldFiles = await fs.promises.readdir(dist, {withFileTypes: true});
     for (const file of oldFiles){
-        await fs.promises.unlink(path.join(dist, file));
+        if (file.isDirectory()){
+            await fs.promises.rmdir(path.join(dist, file.name), { recursive: true });
+        }
+        else {
+            await fs.promises.unlink(path.join(dist, file.name));
+        }
     }
 
     const files = await fs.promises.readdir(src, {withFileTypes: true});
